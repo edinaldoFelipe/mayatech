@@ -1,0 +1,44 @@
+version: '3'
+services:
+
+  # API
+  nodejs-server:
+    build:
+      context: ./backend
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3080:3080"
+    container_name: node-api
+    volumes:
+      - ./backend:/usr/src/maya/api
+      - /usr/src/maya/api/node_modules
+
+  # APP
+  vue-ui:
+    build:
+      context: ./frontend
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8080:8080"
+    container_name: vue-ui
+    volumes:
+      - ./frontend:/usr/src/maya/app
+      - /usr/src/maya/app/node_modules
+
+  # DATABASE
+  postgres:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: maya
+    container_name: postgres
+
+  # ADMINER
+  adminer:
+    image: adminer
+    container_name: adminer-maya
+    restart: always
+    ports:
+      - "5050:8080"

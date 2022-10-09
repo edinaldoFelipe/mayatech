@@ -18,3 +18,29 @@ etc)
 - PostgreSQL
 - Input JSON validation
 - Error handling eg. HTTP status codes
+
+## Install
+
+### Clone repository
+
+```bash
+git clone https://github.com/edinaldoFelipe/mayatech.git maya
+```
+
+### Open folder
+
+```bash
+cd maya
+```
+
+### Run docker compose
+
+```bash
+docker-compose up -d --build
+```
+
+### Browser url
+
+```text
+localhost:8080
+```
