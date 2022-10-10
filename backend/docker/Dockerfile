@@ -14,6 +14,7 @@ RUN npm install
 # RUN npm i body-parser
 # RUN npm i -g nodemon
 # RUN npm i dotenv
+# RUN npm i pg
 
 EXPOSE 3080
 

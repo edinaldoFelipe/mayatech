@@ -12,6 +12,8 @@ services:
     volumes:
       - ./backend:/usr/src/maya/api
       - /usr/src/maya/api/node_modules
+    networks:
+      - development
 
   # APP
   vue-ui:
@@ -30,10 +32,14 @@ services:
     image: postgres:14
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: maya
     container_name: postgres
+    # volumes:
+    #   - ./backend/docker/postgres/init.sql /docker-entrypoint-initdb.d/init.sql
+    networks:
+      - development
 
   # ADMINER
   adminer:
@@ -42,3 +48,9 @@ services:
     restart: always
     ports:
       - "5050:8080"
+    networks:
+      - development
+
+networks:
+  development:
+    name: development
