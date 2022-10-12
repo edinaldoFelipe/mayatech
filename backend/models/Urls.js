@@ -20,7 +20,7 @@ class Urls {
 	async store(fields) {
 		try {
 			const client = await dbConnect()
-			const response = await client.query('INSERT INTO urls (short, original) VALUES ($1::text, $2::text)', fields)
+			const response = await client.query("INSERT INTO urls (short, url) VALUES ($1::text, $2::text);", fields)
 			client.end()
 
 			return response.rowCount
@@ -46,7 +46,7 @@ class Urls {
 	 * @returns {Object | null}
 	 */
 	async findByUrl(url) {
-		return await this.select('SELECT * FROM urls WHERE original LIKE $1::text', [url], true)
+		return await this.select('SELECT * FROM urls WHERE url LIKE $1::text', [url], true)
 	}
 
 	/**
@@ -62,7 +62,7 @@ class Urls {
 			const client = await dbConnect()
 			const urls = await client.query(query, fields)
 			client.end()
-			
+
 			if (!urls.rows)
 				return null
 

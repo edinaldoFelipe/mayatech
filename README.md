@@ -60,7 +60,7 @@ http://localhost:5050/?pgsql=postgres&username=root&db=maya
 CREATE TABLE IF NOT EXISTS urls (
 	id serial PRIMARY KEY,
 	short VARCHAR(10) UNIQUE NOT NULL,
-	original TEXT UNIQUE NOT NULL
+	url TEXT UNIQUE NOT NULL
 );
 ```
 

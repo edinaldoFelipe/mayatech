@@ -14,7 +14,7 @@ class UrlController {
 		try {
 			const urls = await Urls.all()
 
-			if(!urls)
+			if (!urls)
 				return res.status(404).end();
 
 			return res.json(urls);
@@ -36,12 +36,12 @@ class UrlController {
 
 			Validation.alphaNumeric(short)
 
-			const url = await Urls.findByShort(short)
+			const {url} = await Urls.findByShort(short) || {}
 
 			if (!url)
 				return res.status(404).send("Url don't found!")
 
-			return res.json(url)
+			return res.json({url})
 		} catch (error) {
 			return res.status(400).send(error.message)
 		}
@@ -56,28 +56,23 @@ class UrlController {
 	 */
 	async create(req, res) {
 		try {
-			let { short, full } = { full: 'http://google.com.braS', short: 'assadf' },//req.body
-				url
+			let { short, full } = req.body
 
 			Validation.required(full, 'Url')
 			Validation.validateUrl(full)
 
-			if (short)
+			if (short) {
 				Validation.alphaNumeric(short)
-			else
-				short = await this.generateRandomShort()
+				await Validation.existShort(short)
+			} else
+				short = await UrlController.generateRandomShort()
 
-			url = await Urls.findByUrl(full)
-			if (url)
-				throw new Error(`Url always registred! Short Code: ${url.short}`)
+			await Validation.existUrl(full)
 
-			if (await Urls.findByShort(short))
-				throw new Error('Short always registred!')
-
-			if (await Urls.store([short, full]))
+			if (!await Urls.store([short, full]))
 				return res.status(304).end()
 
-			return res.status(201).json({ full, short })
+			return res.status(201).json({ url: `${process.env.BASE_URL}${short}` })
 		} catch (error) {
 			return res.status(400).end(error.message)
 		}
@@ -89,14 +84,14 @@ class UrlController {
 	 * @param {Number} length 
 	 * @returns {String}
 	 */
-	async generateRandomShort(length = 6) {
+	static async generateRandomShort(length = 6) {
 		const short = (Math.random()).toString(36).substr(2, length),
 			url = await Urls.findByShort(short)
 
 		if (url)
-			this.generateRandomShort()
+			return await UrlController.generateRandomShort(length)
 
-		return url
+		return short
 	}
 }
 

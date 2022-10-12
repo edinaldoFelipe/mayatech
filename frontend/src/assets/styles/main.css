@@ -1,0 +1,39 @@
+body {
+	background-color: #444 !important;
+	color: white !important;
+}
+
+input {
+	background-color: #222 !important;
+	color: #ffe8dc !important;
+}
+.needs-validation:not(.was-validated) input {
+	border-color: #666 !important;
+}
+
+label {
+	color: orange !important;
+}
+
+label>small {
+	color: #ffe8dc !important;
+}
+
+footer {
+	color: white !important;
+	text-align: center;
+	background-color: black !important;
+	padding: 2rem;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+
+.alert-fixed {
+	z-index: 9999;
+	position: fixed !important;
+	width: fit-content;
+	border-radius: 1rem;
+	bottom: 2px;
+	right: 2rem;
+}

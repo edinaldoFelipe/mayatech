@@ -15,6 +15,7 @@ RUN npm install
 # RUN npm i -g nodemon
 # RUN npm i dotenv
 # RUN npm i pg
+# RUN npm i valid-url
 
 EXPOSE 3080
 
