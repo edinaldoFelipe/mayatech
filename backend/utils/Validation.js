@@ -1,3 +1,6 @@
+const Urls = require('./../models/Urls')
+const ValidUrl = require('valid-url');
+
 class Validation {
 
 	/**
@@ -17,7 +20,7 @@ class Validation {
 	 * @param {String} stringName 
 	 */
 	required(string, stringName) {
-		if(!string)
+		if (!string)
 			throw new Error(`${stringName} Field is Required!`)
 	}
 
@@ -28,10 +31,33 @@ class Validation {
 	 */
 	validateUrl(url) {
 		try {
-			new URL(url)
+			if (!ValidUrl.isUri(url))
+				throw 0
 		} catch (error) {
 			throw new Error('Url Field Invalid!')
 		}
+	}
+
+	/**
+	 * Check if exist full url
+	 * 
+	 * @param {String} full 
+	 */
+	async existUrl(full) {
+		const url = await Urls.findByUrl(full)
+
+		if (url)
+			throw new Error(`Url always registred! Short Code: ${url.short}`)
+	}
+
+	/**
+	 * Check if exist short code
+	 * 
+	 * @param {String} short 
+	 */
+	async existShort(short) {
+		if (await Urls.findByShort(short))
+			throw new Error('Short always registred!')
 	}
 }
 
