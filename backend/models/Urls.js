@@ -18,14 +18,15 @@ class Urls {
 	 * @returns {Number}
 	 */
 	async store(fields) {
+		const client = await dbConnect()
 		try {
-			const client = await dbConnect()
-			const response = await client.query("INSERT INTO urls (short, url) VALUES ($1::text, $2::text);", fields)
-			client.end()
+			const response = await client.query("INSERT INTO urls (short, url) VALUES ($1::text, $2::text) RETURNING id;", fields)
 
-			return response.rowCount
+			return response.rows[0].id
 		} catch (error) {
 			throw error
+		} finally {
+			client.end()
 		}
 	}
 
@@ -58,11 +59,10 @@ class Urls {
 	 * @returns {Array | Object | Null}
 	 */
 	async select(query, fields = '', first = false) {
+		const client = await dbConnect()
 		try {
-			const client = await dbConnect()
 			const urls = await client.query(query, fields)
-			client.end()
-
+			
 			if (!urls.rows)
 				return null
 
@@ -72,6 +72,29 @@ class Urls {
 			return urls.rows
 		} catch (error) {
 			throw error
+		} finally {
+			client.end()
+		}
+	}
+
+	/**
+	 * Delete row
+	 * 
+	 * @param {Array | String} ids
+	 * @returns {Boolean}
+	 */
+	async destroy(ids) {
+		const client = await dbConnect()
+		try {
+			const completment = Array.isArray(ids) ? 'ANY ($1)' : '$1'
+
+			await client.query(`DELETE FROM urls WHERE id = ${completment}`, [ids])
+
+			return true
+		} catch (error) {
+			throw error
+		} finally {
+			client.end()
 		}
 	}
 }

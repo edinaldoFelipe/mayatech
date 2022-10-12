@@ -16,6 +16,7 @@ RUN npm install
 # RUN npm i dotenv
 # RUN npm i pg
 # RUN npm i valid-url
+# RUN npm i --save-dev jest
 
 EXPOSE 3080
 

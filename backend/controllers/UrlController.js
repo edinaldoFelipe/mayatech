@@ -36,12 +36,12 @@ class UrlController {
 
 			Validation.alphaNumeric(short)
 
-			const {url} = await Urls.findByShort(short) || {}
+			const { url } = await Urls.findByShort(short) || {}
 
 			if (!url)
 				return res.status(404).send("Url don't found!")
 
-			return res.json({url})
+			return res.json({ url })
 		} catch (error) {
 			return res.status(400).send(error.message)
 		}
@@ -95,4 +95,7 @@ class UrlController {
 	}
 }
 
-module.exports = new UrlController()
+module.exports = {
+	UrlController: new UrlController(),
+	GenerateRandomShort: UrlController.generateRandomShort
+}

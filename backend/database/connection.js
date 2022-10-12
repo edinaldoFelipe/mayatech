@@ -6,12 +6,12 @@ const { Client } = require('pg')
  * @returns {Client}
  */
 const connect = async function() {
+	const client = new Client()
 	try {
-		const client = new Client()
 		await client.connect()
 		return client
 	} catch (err) {
-		console.error(err.message)
+		client.end()
 		throw new Error("Database don't connected!")
 	}
 };

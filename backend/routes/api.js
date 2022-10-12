@@ -1,5 +1,5 @@
 const Router = require('express').Router()
-const UrlController = require('./../controllers/UrlController')
+const { UrlController } = require('./../controllers/UrlController')
 require('dotenv').config()
 
 Router.get('/', UrlController.index)

@@ -70,6 +70,20 @@ CREATE TABLE IF NOT EXISTS urls (
 localhost:8080
 ```
 
+# Unit Test
+
+## Backend
+
+Enter into container docker
+
+```bash
+docker exec -it node-api bash
+```
+
+```bash
+npm test
+```
+
 # API Documentation
 
 > ## All Urls
